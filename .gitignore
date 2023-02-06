@@ -1,0 +1,30 @@
+# Build output
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+
+# Visual Studio / Rider
+.vs/
+.idea/
+*.user
+*.suo
+*.userprefs
+*.sln.docstates
+
+# Publish
+publish/
+*.publishsettings
+PublishProfiles/
+
+# NuGet
+*.nupkg
+packages/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.log
