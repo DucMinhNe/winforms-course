@@ -1,0 +1,27 @@
+# Publishing a WinForms app — command reference
+
+# 1. Framework-dependent (smallest; user needs .NET runtime installed)
+dotnet publish -c Release -r win-x64 --self-contained false
+
+# 2. Self-contained (no .NET needed on the target; larger output)
+dotnet publish -c Release -r win-x64 --self-contained true
+
+# 3. Self-contained + single .exe (one file to hand over)
+dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true
+
+# 4. ...plus trimming to shrink it (TEST — reflection-based code can break)
+dotnet publish -c Release -r win-x64 --self-contained true \
+  -p:PublishSingleFile=true -p:PublishTrimmed=true
+
+# Output lands in:
+#   bin/Release/net7.0-windows/win-x64/publish/
+
+# --- In the .csproj you can set identity ---
+# <PropertyGroup>
+#   <ApplicationIcon>app.ico</ApplicationIcon>
+#   <Version>1.0.0</Version>
+#   <AssemblyTitle>Hello Forms</AssemblyTitle>
+# </PropertyGroup>
+
+# Visual Studio: Build ▸ Publish ▸ (Folder | ClickOnce).
+# ClickOnce gives an installer with automatic updates.
