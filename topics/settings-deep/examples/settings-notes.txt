@@ -1,0 +1,33 @@
+// Settings patterns reference.
+
+// --- User vs Application scope ---
+// User (read/write):
+Properties.Settings.Default.Theme = "Dark";
+Properties.Settings.Default.Save();
+
+// Application (read-only at runtime — set in the Settings designer / App.config):
+string buildChannel = Properties.Settings.Default.Channel;   // can't assign
+
+// --- First-run upgrade after a version bump ---
+// Add a bool user setting "HasUpgraded" (default false).
+if (!Properties.Settings.Default.HasUpgraded)
+{
+    Properties.Settings.Default.Upgrade();        // pull forward old version's values
+    Properties.Settings.Default.HasUpgraded = true;
+    Properties.Settings.Default.Save();
+}
+
+// --- Modern read-only config (Microsoft.Extensions.Configuration) ---
+// dotnet add package Microsoft.Extensions.Configuration.Json
+var config = new Microsoft.Extensions.Configuration.ConfigurationBuilder()
+    .AddJsonFile("appsettings.json", optional: true)
+    .Build();
+string? apiUrl = config["Api:BaseUrl"];
+
+// appsettings.json:
+// {
+//   "Api": { "BaseUrl": "https://api.example.com" }
+// }
+
+// File location of user.config (roughly):
+//   %LocalAppData%\<Company>\<AppName>_<hash>\<version>\user.config
