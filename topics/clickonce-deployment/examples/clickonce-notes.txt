@@ -1,0 +1,23 @@
+# ClickOnce deployment — reference
+
+# Visual Studio: Project ▸ Publish ▸ (new profile) ▸ ClickOnce
+#   - Publish location:  folder / network share / web server (https)
+#   - Install mode:      "available online only" OR "available offline too" (Start-menu shortcut)
+#   - Publish version:   e.g. 1.0.0.5  (BUMP every publish → clients detect updates)
+#   - Updates:           check before / after launch; set a minimum required version to force-upgrade
+#   - Signing:           sign the manifest with a code-signing cert (reduces SmartScreen warnings)
+
+# Output (in the publish folder):
+#   setup.exe
+#   YourApp.application          (deployment manifest)
+#   Application Files/
+#     YourApp_1_0_0_5/...
+
+# Update flow:
+#   - On launch, the installed app reads YourApp.application from the publish URL.
+#   - If a newer Publish version exists, it downloads and applies it.
+
+# Trade-offs vs other options:
+#   ClickOnce  → easiest auto-update for internal Windows apps
+#   MSIX       → modern packaging, Store-ready, clean uninstall (more setup)
+#   dotnet publish (single-file) → portable, but YOU handle updates

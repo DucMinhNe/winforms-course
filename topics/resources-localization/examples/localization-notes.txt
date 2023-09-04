@@ -1,0 +1,29 @@
+// Localization reference.
+
+// --- Resource files ---
+// Properties/Strings.resx          → base (e.g. English)
+//   Greeting = "Hello"
+// Properties/Strings.vi.resx       → Vietnamese
+//   Greeting = "Xin chào"
+// Properties/Strings.fr.resx       → French
+//   Greeting = "Bonjour"
+
+// Type-safe access (auto-generated designer wrapper):
+label1.Text = Properties.Strings.Greeting;
+
+// --- Set the culture BEFORE building localized forms (Program.Main) ---
+using System.Globalization;
+using System.Threading;
+
+var culture = new CultureInfo("vi");
+Thread.CurrentThread.CurrentUICulture = culture;   // which translation loads
+Thread.CurrentThread.CurrentCulture   = culture;   // number/date/currency format
+Application.Run(new MainForm());
+
+// --- Localizing a form via the designer ---
+// 1. Form.Localizable = true
+// 2. Form.Language = "vi"  → designer writes Form1.vi.resx
+// 3. Translate control Text for that culture
+// Runtime loads satellite assemblies:  vi\<App>.resources.dll
+
+// To switch language at runtime, set the culture then re-create the form.

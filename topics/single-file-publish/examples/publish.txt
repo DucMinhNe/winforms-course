@@ -1,0 +1,30 @@
+# Single-file publish — command reference
+
+# Portable single exe (bundles the runtime; runs without .NET installed)
+dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true
+
+# Smaller: trim unused IL + compress the bundle (TEST — trimming can break reflection)
+dotnet publish -c Release -r win-x64 --self-contained true \
+  -p:PublishSingleFile=true \
+  -p:PublishTrimmed=true \
+  -p:EnableCompressionInSingleFile=true
+
+# Smallest download, but the target machine must have the matching .NET runtime
+dotnet publish -c Release -r win-x64 --self-contained false -p:PublishSingleFile=true
+
+# Output:
+#   bin/Release/net7.0-windows/win-x64/publish/YourApp.exe
+
+# Put identity in the .csproj:
+#   <PropertyGroup>
+#     <ApplicationIcon>app.ico</ApplicationIcon>
+#     <Version>1.0.0</Version>
+#     <AssemblyTitle>My App</AssemblyTitle>
+#     <!-- keep native libs inside the single file -->
+#     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+#   </PropertyGroup>
+
+# Trade-offs:
+#   self-contained     → portable, large (~60-150MB)
+#   framework-dependent→ tiny, needs .NET runtime present
+#   +trimmed           → smaller, but test for reflection breakage
